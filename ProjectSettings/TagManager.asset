@@ -17,27 +17,27 @@ TagManager:
   - PostProcess
   - 
   - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - KeypointVisual
   - Obstacle
+  - KeypointVisual
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - Omnity
+  - 
   m_SortingLayers:
   - name: Default
     uniqueID: 0

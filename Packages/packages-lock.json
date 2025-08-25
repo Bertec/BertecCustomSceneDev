@@ -7,12 +7,12 @@
       "dependencies": {
         "com.unity.nuget.newtonsoft-json": "3.2.1",
         "com.unity.postprocessing": "3.4.0",
-        "com.unity.xr.picoxr": "https://github.com/Bertec/PicoUnitySDK.git#v2.5.3"
+        "com.unity.xr.picoxr": "https://github.com/Bertec/PicoUnitySDK.git"
       },
-      "hash": "077682b9365111c90cd95a23af4b52ee4b6366f7"
+      "hash": "41cdebf21b56352a57203be8837e8dc474ed3ea7"
     },
     "com.unity.burst": {
-      "version": "1.8.18",
+      "version": "1.8.24",
       "depth": 0,
       "source": "registry",
       "dependencies": {
@@ -29,7 +29,7 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.ide.rider": {
-      "version": "3.0.34",
+      "version": "3.0.36",
       "depth": 0,
       "source": "registry",
       "dependencies": {
@@ -38,7 +38,7 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.ide.visualstudio": {
-      "version": "2.0.22",
+      "version": "2.0.23",
       "depth": 0,
       "source": "registry",
       "dependencies": {
@@ -54,7 +54,7 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.inputsystem": {
-      "version": "1.11.2",
+      "version": "1.14.2",
       "depth": 0,
       "source": "registry",
       "dependencies": {
@@ -70,7 +70,7 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.mobile.android-logcat": {
-      "version": "1.4.4",
+      "version": "1.4.5",
       "depth": 0,
       "source": "registry",
       "dependencies": {},
@@ -113,7 +113,7 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.timeline": {
-      "version": "1.7.6",
+      "version": "1.7.7",
       "depth": 0,
       "source": "registry",
       "dependencies": {
@@ -134,8 +134,8 @@
       }
     },
     "com.unity.xr.core-utils": {
-      "version": "2.5.1",
-      "depth": 1,
+      "version": "2.5.2",
+      "depth": 0,
       "source": "registry",
       "dependencies": {
         "com.unity.modules.xr": "1.0.0"
@@ -159,7 +159,7 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.xr.legacyinputhelpers": {
-      "version": "2.1.11",
+      "version": "2.1.12",
       "depth": 0,
       "source": "registry",
       "dependencies": {
@@ -169,14 +169,15 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.xr.management": {
-      "version": "4.5.0",
+      "version": "4.5.1",
       "depth": 0,
       "source": "registry",
       "dependencies": {
         "com.unity.modules.vr": "1.0.0",
         "com.unity.modules.xr": "1.0.0",
+        "com.unity.xr.core-utils": "2.2.1",
         "com.unity.modules.subsystems": "1.0.0",
-        "com.unity.xr.legacyinputhelpers": "2.1.7"
+        "com.unity.xr.legacyinputhelpers": "2.1.11"
       },
       "url": "https://packages.unity.com"
     },
@@ -188,7 +189,7 @@
         "com.unity.xr.management": "4.5.0",
         "com.unity.xr.interaction.toolkit": "3.0.3"
       },
-      "hash": "5a000e2bf142b525addd3187339e7ead1f2f5d0b"
+      "hash": "00fb92194234407be945863981a9d636996e7eb4"
     },
     "com.unity.modules.ai": {
       "version": "1.0.0",

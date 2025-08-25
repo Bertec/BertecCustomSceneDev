@@ -133,7 +133,7 @@ GameObject:
   - component: {fileID: 54565262}
   - component: {fileID: 54565265}
   - component: {fileID: 54565264}
-  m_Layer: 30
+  m_Layer: 12
   m_Name: COP_YellowStar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -704,7 +704,7 @@ GameObject:
   - component: {fileID: 431829122}
   - component: {fileID: 431829124}
   - component: {fileID: 431829123}
-  m_Layer: 30
+  m_Layer: 12
   m_Name: KP1_BlueSphere
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -787,7 +787,7 @@ GameObject:
   - component: {fileID: 441586599}
   - component: {fileID: 441586598}
   - component: {fileID: 441586597}
-  m_Layer: 30
+  m_Layer: 12
   m_Name: COP_BlueSphere
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -890,7 +890,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   TestRunning: 0
   VisualFlowSpeed: 0
-  FlowSpeedScaler: 0.2
+  FlowSpeedScaler: 1
   BlockRepostionOffset: 27
   GroundBlocks:
   - {fileID: 58102722}
@@ -920,6 +920,7 @@ MonoBehaviour:
   COP_YellowStar: {fileID: 54565261}
   Path_SpottedRock: {fileID: 2100000, guid: c0837bacfa361a7468804df6aa072d6a, type: 2}
   Path_SolidColorTile: {fileID: 2100000, guid: e09126378edf9a04da7d96cdc9559daa, type: 2}
+  mainBertecController: {fileID: 1531028652}
   visualizerMode: 0
 --- !u!4 &447464442
 Transform:
@@ -1164,7 +1165,7 @@ GameObject:
   - component: {fileID: 652312814}
   - component: {fileID: 652312815}
   - component: {fileID: 652312818}
-  m_Layer: 31
+  m_Layer: 11
   m_Name: Obstacle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1536,7 +1537,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: ab20cb9b813c2d540bf9797071efe34d, type: 3}
       propertyPath: m_Layer
-      value: 31
+      value: 11
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1559,7 +1560,7 @@ GameObject:
   - component: {fileID: 1212460814}
   - component: {fileID: 1212460815}
   - component: {fileID: 1212460816}
-  m_Layer: 30
+  m_Layer: 12
   m_Name: COP Keypoint Visualizers
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1642,7 +1643,7 @@ GameObject:
   - component: {fileID: 1297788337}
   - component: {fileID: 1297788339}
   - component: {fileID: 1297788338}
-  m_Layer: 30
+  m_Layer: 12
   m_Name: KP2_BlueSphere
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2113,7 +2114,7 @@ GameObject:
   - component: {fileID: 1500018802}
   - component: {fileID: 1500018801}
   - component: {fileID: 1500018800}
-  m_Layer: 30
+  m_Layer: 12
   m_Name: KP_1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2304,6 +2305,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f8b6269b61653c94a8c6d4ab2a0ee640, type: 3}
+--- !u!1 &1531028652 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1249009222900104340, guid: f8b6269b61653c94a8c6d4ab2a0ee640, type: 3}
+  m_PrefabInstance: {fileID: 1531028651}
+  m_PrefabAsset: {fileID: 0}
 --- !u!20 &1531028653 stripped
 Camera:
   m_CorrespondingSourceObject: {fileID: 2416378842497099339, guid: f8b6269b61653c94a8c6d4ab2a0ee640, type: 3}
@@ -2602,7 +2608,7 @@ GameObject:
   - component: {fileID: 1806456299}
   - component: {fileID: 1806456301}
   - component: {fileID: 1806456300}
-  m_Layer: 30
+  m_Layer: 12
   m_Name: KP1_YellowStar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2686,7 +2692,7 @@ GameObject:
   - component: {fileID: 1853812781}
   - component: {fileID: 1853812783}
   - component: {fileID: 1853812782}
-  m_Layer: 30
+  m_Layer: 12
   m_Name: KP_2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7615,7 +7621,7 @@ GameObject:
   - component: {fileID: 1879902841}
   - component: {fileID: 1879902843}
   - component: {fileID: 1879902842}
-  m_Layer: 30
+  m_Layer: 12
   m_Name: KP2_YellowStar
   m_TagString: Untagged
   m_Icon: {fileID: 0}

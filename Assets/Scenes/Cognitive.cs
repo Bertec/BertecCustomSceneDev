@@ -58,6 +58,12 @@ public class Cognitive : MonoBehaviour
     // to the PC side what it did. Here, we generate a simple bit of text on the screen with five different colors and words.
     private void ShowCognitiveDisplay(Bertec.ShowCognitiveData cogData)
     {
+        // When in passthrough/idle mode, we don't want to change any of the options.
+        if (Bertec.SystemDisplayDeviceManager.IsPassthrough)
+        {
+            return;
+        }
+        
         if (cogData.ID == COGNITIVECHOICE_STROOP)
         {
             (string text, Color color)[] stroopTestColors =

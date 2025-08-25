@@ -77,6 +77,7 @@ public class StaticScene : MonoBehaviour
     public Cognitive cognitiveObject;
     public GameObject visualAidObject;
     public Transform bubbleParent;
+    public Bertec.CameraContainer cameraContainer;
 
     private List<BubblePrefab> bubbles = new List<BubblePrefab>();
 
@@ -124,11 +125,12 @@ public class StaticScene : MonoBehaviour
 
 		if (bubblePrefab != null)
 		{
-			Quaternion cameraRotation = Quaternion.Euler(0f, Camera.main.transform.rotation.eulerAngles.y, 0f);
+			Quaternion cameraRotation = Quaternion.Euler(0f, cameraContainer.MainCamera.transform.rotation.eulerAngles.y, 0f);
 			for (int i = 0; i < bubblesOptionValue; i++)
 			{
 				BubblePrefab bubble = Instantiate(bubblePrefab, bubbleParent);
-				Vector3 pos = new Vector3(RandomByHalves(-6, 6), RandomByHalves(-4, 4), RandomByHalves(3, 17));
+                bubble.Init(cameraContainer.MainCamera.transform);
+                Vector3 pos = new Vector3(RandomByHalves(-6, 6), RandomByHalves(-4, 4), RandomByHalves(3, 17));
 				bubble.transform.position = cameraRotation * pos;  // this puts the bubble in front of the camera no matter the Y rotation
 				bubble.transform.localScale = new Vector3(0.05f, 0.05f, 0.05f);
 
@@ -144,7 +146,7 @@ public class StaticScene : MonoBehaviour
 
 	Vector3 GetRandomPositionInFieldOfView()
 	{
-		Camera mainCamera = Camera.main;
+		Camera mainCamera = cameraContainer.MainCamera;
 		float fieldOfView = mainCamera.fieldOfView;
 		float aspectRatio = mainCamera.aspect;
 		float cameraRotation = mainCamera.transform.rotation.eulerAngles.y;
@@ -160,19 +162,29 @@ public class StaticScene : MonoBehaviour
 
 		return randomPosition;
 	}
+    
+    private void ChangeBackgroundColor(Color color)
+    {
+        Bertec.CameraContainer.ChangeCameraBackgroundColor(color);
+    }
 
 	// This will be called whenever the user changes the option in the PC side and when the scene is loaded with the initial protocol options.
 	void OptionChanged(string key, object val)
 	{
+        // When in passthrough/idle mode, we don't want to change any of the options.
+        if (Bertec.SystemDisplayDeviceManager.IsPassthrough)
+        {
+            return;
+        }
 		if (key == BACKGROUNDOPTION)
 		{
 			switch (val.ToString())
 			{
 				case BACKGROUNDOPTION_BLACK:
-					Camera.main.backgroundColor = Color.black;
+                    ChangeBackgroundColor(Color.black);
 					break;
 				case BACKGROUNDOPTION_BLUE:
-					Camera.main.backgroundColor = Color.blue;
+                    ChangeBackgroundColor(Color.blue);
 					break;
 			}
 		}

@@ -255,7 +255,7 @@ GameObject:
   - component: {fileID: 345051840}
   - component: {fileID: 345051839}
   m_Layer: 0
-  m_Name: StaticScene
+  m_Name: MainScene
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -277,6 +277,7 @@ MonoBehaviour:
   cognitiveObject: {fileID: 307162596}
   visualAidObject: {fileID: 145299129}
   bubbleParent: {fileID: 1357800551}
+  cameraContainer: {fileID: 1778960824}
 --- !u!4 &345051840
 Transform:
   m_ObjectHideFlags: 0
@@ -672,6 +673,17 @@ Transform:
   m_Children: []
   m_Father: {fileID: 345051840}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1778960824 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1249009222900104343, guid: f8b6269b61653c94a8c6d4ab2a0ee640, type: 3}
+  m_PrefabInstance: {fileID: 832244970}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 86e6c5e28edd0db47b14945b63f0c116, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &2040884437
 PrefabInstance:
   m_ObjectHideFlags: 0

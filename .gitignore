@@ -57,3 +57,4 @@ TestBuild/
 Assets/GPUInstancer/Demos/
 Assets/GPUInstancer/Extras/
 BuildOutput/*
+BuildOutputCDP/

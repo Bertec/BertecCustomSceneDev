@@ -1,8 +1,8 @@
 {
   "PackageName": "com.BertecCorporation.SampleScene",
-  "PackageVersion": "1.1.0.1638",
+  "PackageVersion": "1.4.0.1758",
   "ProductName": "SampleScene",
-  "FrameworkVersion": "1.0.6",
+  "FrameworkVersion": "1.0.11",
   "FrameworkProtocol": 1,
   "Scenes": [
     {
@@ -164,7 +164,7 @@
         "VisualFlow": true,
         "HasPostProcessing": true,
         "HasObstacles": true,
-        "CameraRotation": 3,
+        "CameraRotation": 1,
         "CoPKeypointVisualizers": {
           "Items": [
             {

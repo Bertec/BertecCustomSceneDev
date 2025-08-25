@@ -59,9 +59,9 @@ public class VisualFlow : MonoBehaviour
                 VisualFlow = true, // will turn on the Visual Flow option in the UI
                 HasPostProcessing = true, // will turn on Grain and Vignette options in the UI
                 HasObstacles = true, // implies a UI option set
-                CameraRotation =
-                    CameraRotations
-                        .BothSinusoidalAndRotate, // will turn on various Rotation options in the UI (sinusoidal, etc)
+                CameraRotation = Bertec.CameraRotations.RotateXYZ, // will turn on the Rotation options in the UI
+            // Optionally, you can elect to enable both rotate and sinusoidal rotation by using the following value instead:
+            //  CameraRotation = Bertec.CameraRotations.BothSinusoidalAndRotate // will turn on both Rotation and Sinusoidal options in the UI
 
                 Cognitive = Cognitive.MakeCognitive(),
 
@@ -197,7 +197,7 @@ public class VisualFlow : MonoBehaviour
     // UpdateVisualFlowSpeed and MoveGroundBlocks
     public float
         FlowSpeedScaler =
-            0.2f; // this is used to scale the belt speed to the visual flow speed. The belt speed is in meters per second
+            1f; // this is used to scale the belt speed to the visual flow speed. The belt speed is in meters per second
 
     // while the visual flow speed is in units per second. This value is used to convert the belt speed to the visual flow speed.
     // This value is set in the editor and should be tuned to match the visual flow speed to the belt speed.
@@ -250,6 +250,9 @@ public class VisualFlow : MonoBehaviour
         CursorPosGain =
             10.0f; // used to scale the force plate input to something Unity can handle; your code may need something else
 
+
+    [Header("Integration")] public GameObject mainBertecController = null;
+
     [NonSerialized]
     public float minLeftCursorPos, maxRightCursorPos; // set from the Path_... values
 
@@ -258,8 +261,34 @@ public class VisualFlow : MonoBehaviour
     public KeyPointVisualizerEvents.VisualizerMode visualizerMode = KeyPointVisualizerEvents.VisualizerMode.None;
     private string currentCopKeypointImageSelection = "";
 
+    protected OptionChangedContainer optionsContainer;
+
+    protected ProtocolOptionChangedEventHandler OptionEvents
+    {
+        get
+        {
+            if (!optionsContainer)
+            {
+                optionsContainer = GameObject.FindAnyObjectByType<Bertec.OptionChangedContainer>();
+            }
+
+            if (optionsContainer)
+            {
+                return optionsContainer.OptionEvents;
+            }
+            else
+            {
+                return null;
+            }
+        }
+    }
+
     void Awake()
     {
+        // If the main controller is not set, then find it.
+        if (!mainBertecController)
+            mainBertecController = GameObject.Find("MainBertecController");
+
         TestRunning = false;
         VisualFlowSpeed = 0;
 
@@ -280,6 +309,10 @@ public class VisualFlow : MonoBehaviour
         SetVisualDistraction(false);
 
         OptionChangedContainer.Connect(OptionChanged);
+
+        // Set up the camera vertical position changing
+        OptionEvents.SubjectHeightChanged += (mm) => SetCameraYOffset(mm);
+        SetCameraYOffset(OptionEvents.SubjectHeight);
 
         // This updates the scene movement
         VisualFlowMovementSpeed.SpeedUpdated += UpdateVisualFlowSpeed;
@@ -309,6 +342,26 @@ public class VisualFlow : MonoBehaviour
         KeyPointVisualizerEvents.VisualizerChanged -= SetKeypointVisualizer;
         KeyPointVisualizerEvents.KeypointPositionUpdated -= KeypointPositionUpdated;
         ObstacleEvents.OnResetHitMissCounts -= ResetHitMissCounts;
+    }
+
+    /// <summary>
+    /// Sets the subject height.
+    /// The subject height is retrieved in millimeters, so we convert it to meters
+    /// </summary>
+    /// <param name="mm">New subject height in millimeters, convert it to meters inside</param>
+    private void SetCameraYOffset(float mm)
+    {
+        if (mm >= 300)  // just to be sure it's not too low (must be higher than 30 centimeters)
+        {
+            // Set the camera Y offset to the subject height in meters; this is used to position the camera at the correct height
+            // The main controller is used to set the camera position, so we can use it to set the Y offset
+            if (mainBertecController)
+            {
+                Vector3 tempPos = mainBertecController.transform.position;
+                tempPos.y = (mm / 1000.0f); // convert to meters to match the Unity scene
+                mainBertecController.transform.position = tempPos;
+            }
+        }
     }
 
     private void SetVisualizerMode(KeyPointVisualizerEvents.VisualizerMode mode)
@@ -672,7 +725,7 @@ public class VisualFlow : MonoBehaviour
     // the combined Speed value which is the max of the two.
     private void UpdateVisualFlowSpeed(FlowMovementSpeedData newSpeed)
     {
-        VisualFlowSpeed = MathF.Max(0, newSpeed.Speed); // the treadmill can run in reverse but our scene cannot
+        VisualFlowSpeed = MathF.Max(0, newSpeed.Speed * FlowSpeedScaler); // the treadmill can run in reverse but our scene cannot
     }
 
     // Move the blocks forward in time with the set speed. If the block is behind the camera, move it to the front.
