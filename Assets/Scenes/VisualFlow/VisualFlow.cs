@@ -260,6 +260,11 @@ public class VisualFlow : MonoBehaviour
     [HideInInspector]
     public KeyPointVisualizerEvents.VisualizerMode visualizerMode = KeyPointVisualizerEvents.VisualizerMode.None;
     private string currentCopKeypointImageSelection = "";
+    private bool _isInPassthrough = false;
+    private bool _audioAmbianceEnabled = false;
+    private bool _visualDistractionEnabled = false;
+    private bool _obstacleAudioFeedbackEnabled = false;
+    private string _currentObstacleOption = OBSTACLEOPTION_NONE;
 
     protected OptionChangedContainer optionsContainer;
 
@@ -308,6 +313,8 @@ public class VisualFlow : MonoBehaviour
         SetObstacleAudioFeedbackOption(false);
         SetVisualDistraction(false);
 
+        Bertec.SystemDisplayDeviceManager.OnPassthroughChanged += HandlePassthroughChanged;
+
         OptionChangedContainer.Connect(OptionChanged);
 
         // Set up the camera vertical position changing
@@ -333,10 +340,13 @@ public class VisualFlow : MonoBehaviour
             // missing will be just behind the trailing edge of the keypoint and just before the leading edge of the obstacle.
             // You can adjust this a bit forwards (ex: * 0.9f) or back (*1.1f) depending on how you like it to 'feel'
         }
+
+        HandlePassthroughChanged(Bertec.SystemDisplayDeviceManager.IsPassthrough);
     }
 
     private void OnDestroy()
     {
+        Bertec.SystemDisplayDeviceManager.OnPassthroughChanged -= HandlePassthroughChanged;
         VisualFlowMovementSpeed.SpeedUpdated -= UpdateVisualFlowSpeed;
         KeyPointVisualizerEvents.VisualizerModeChanged -= SetVisualizerMode;
         KeyPointVisualizerEvents.VisualizerChanged -= SetKeypointVisualizer;
@@ -360,6 +370,7 @@ public class VisualFlow : MonoBehaviour
                 Vector3 tempPos = mainBertecController.transform.position;
                 tempPos.y = (mm / 1000.0f); // convert to meters to match the Unity scene
                 mainBertecController.transform.position = tempPos;
+                CameraContainerCallbacks.RefreshBaseCameraPosition(CameraPositionAxis.Y);
             }
         }
     }
@@ -439,6 +450,11 @@ public class VisualFlow : MonoBehaviour
 
     private void Update()
     {
+        if (_isInPassthrough)
+        {
+            return;
+        }
+
         if (VisualFlowSpeed > 0)
         {
             MoveGroundBlocks();
@@ -581,6 +597,12 @@ public class VisualFlow : MonoBehaviour
 
     void OptionChanged(string key, object val)
     {
+        // When in passthrough/idle mode, we don't want to change any of the options.
+        if (_isInPassthrough || Bertec.SystemDisplayDeviceManager.IsPassthrough)
+        {
+            return;
+        }
+
         switch (key)
         {
             case LIGHTINGOPTION:
@@ -674,6 +696,13 @@ public class VisualFlow : MonoBehaviour
 
     private void SetObstacleOption(string obstacleOption)
     {
+        _currentObstacleOption = obstacleOption;
+
+        if (_isInPassthrough)
+        {
+            return;
+        }
+
         switch (obstacleOption)
         {
             case OBSTACLEOPTION_NONE:
@@ -693,23 +722,28 @@ public class VisualFlow : MonoBehaviour
     
     private void SetObstacleAudioFeedbackOption(bool state)
     {
+        _obstacleAudioFeedbackEnabled = state;
         ObstacleObject?.SetAudioFeedback(state);
     }
 
     private void SetVisualDistraction(bool state)
     {
-        foreach (GameObject distractionBubble in Distraction_Bubbles)
-        {
-            distractionBubble?.SetActive(state);
-        }
+        _visualDistractionEnabled = state;
+        ApplyVisualDistractionState(_isInPassthrough ? false : state);
     }
 
     // The audio ambiance is a looping music file that plays in the background. This function will start or stop the music.
     private void SetAudioAmbiance(bool state)
     {
+        _audioAmbianceEnabled = state;
+
         if (AmbianceSound != null)
         {
-            if (state)
+            if (_isInPassthrough)
+            {
+                AmbianceSound.Stop();
+            }
+            else if (state)
             {
                 if (!AmbianceSound.isPlaying) // avoid restarting the sound loop
                     AmbianceSound.Play();
@@ -726,6 +760,38 @@ public class VisualFlow : MonoBehaviour
     private void UpdateVisualFlowSpeed(FlowMovementSpeedData newSpeed)
     {
         VisualFlowSpeed = MathF.Max(0, newSpeed.Speed * FlowSpeedScaler); // the treadmill can run in reverse but our scene cannot
+    }
+
+    private void HandlePassthroughChanged(bool isPassthrough)
+    {
+        _isInPassthrough = isPassthrough;
+
+        if (isPassthrough)
+        {
+            AmbianceSound?.Stop();
+            DisableCoPVisualizers();
+            ApplyVisualDistractionState(false);
+            ObstacleObject?.DisableObstacle();
+            return;
+        }
+
+        SetAudioAmbiance(_audioAmbianceEnabled);
+        SetVisualDistraction(_visualDistractionEnabled);
+        SetObstacleAudioFeedbackOption(_obstacleAudioFeedbackEnabled);
+        SetObstacleOption(_currentObstacleOption);
+
+        if (visualizerMode == KeyPointVisualizerEvents.VisualizerMode.CoP)
+        {
+            SetKeypointVisualizer(KeyPointVisualizerEvents.FORCEPLATEKEYPOINTTAG, currentCopKeypointImageSelection);
+        }
+    }
+
+    private void ApplyVisualDistractionState(bool state)
+    {
+        foreach (GameObject distractionBubble in Distraction_Bubbles)
+        {
+            distractionBubble?.SetActive(state);
+        }
     }
 
     // Move the blocks forward in time with the set speed. If the block is behind the camera, move it to the front.

@@ -45,6 +45,7 @@ public class Cognitive : MonoBehaviour
         // The CognitiveEvents class will trigger show/hide and your code should handle presenting and reporting back to the ui
         Bertec.CognitiveEvents.ShowCognitiveDisplay += ShowCognitiveDisplay;
         Bertec.CognitiveEvents.HideCognitiveDisplay += HideCognitiveDisplay;
+        Bertec.SystemDisplayDeviceManager.OnPassthroughChanged += HandlePassthroughChanged;
         HideCognitiveDisplay();
     }
 
@@ -52,6 +53,7 @@ public class Cognitive : MonoBehaviour
     {
         Bertec.CognitiveEvents.ShowCognitiveDisplay -= ShowCognitiveDisplay;
         Bertec.CognitiveEvents.HideCognitiveDisplay -= HideCognitiveDisplay;
+        Bertec.SystemDisplayDeviceManager.OnPassthroughChanged -= HandlePassthroughChanged;
     }
 
     // When the PC side triggers a Show Cognitive Display, the Unity side should generate the appropriate display and report back
@@ -119,6 +121,14 @@ public class Cognitive : MonoBehaviour
         {
             Panel.enabled = false;
             Bertec.CognitiveEvents.CognitiveHidden();
+        }
+    }
+
+    private void HandlePassthroughChanged(bool isPassthrough)
+    {
+        if (isPassthrough)
+        {
+            HideCognitiveDisplay();
         }
     }
 }

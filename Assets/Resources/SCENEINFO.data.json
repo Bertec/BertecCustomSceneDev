@@ -1,8 +1,8 @@
 {
   "PackageName": "com.BertecCorporation.SampleScene",
-  "PackageVersion": "1.4.0.1758",
+  "PackageVersion": "1.5.0.1850",
   "ProductName": "SampleScene",
-  "FrameworkVersion": "1.0.11",
+  "FrameworkVersion": "1.0.14",
   "FrameworkProtocol": 1,
   "Scenes": [
     {

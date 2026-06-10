@@ -90,6 +90,11 @@ public class Obstacle : MonoBehaviour
 
     void Update()
     {
+        if (Bertec.SystemDisplayDeviceManager.IsPassthrough)
+        {
+            return;
+        }
+
         switch (hittingStatus)
         {
             case Status.NotChecking:
@@ -144,6 +149,11 @@ public class Obstacle : MonoBehaviour
     /// <param name="speed">The speed at which the obstacle should move.</param>
     public void MoveObstacle(float speed)
     {
+        if (Bertec.SystemDisplayDeviceManager.IsPassthrough)
+        {
+            return;
+        }
+
         if (isActiveAndEnabled)
         {
             transform.Translate(Vector3.back * speed, Space.World);
@@ -153,6 +163,11 @@ public class Obstacle : MonoBehaviour
     // This the player has hit the Obstacle; update the hit count and inform the UI
     private void OnTriggerEnter(Collider other)
     {
+        if (Bertec.SystemDisplayDeviceManager.IsPassthrough)
+        {
+            return;
+        }
+
         if (isActiveAndEnabled && (hittingStatus == Status.WaitingForHitMiss))
         {
             hittingStatus = Status.HitPlayer;  // so that the miss doesn't count

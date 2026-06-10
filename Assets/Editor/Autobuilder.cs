@@ -10,7 +10,7 @@ using UnityEngine;
 
 class Autobuilder
 {
-    static private string[] scenes = {
+    public static readonly string[] scenes = {
     "Assets/Scenes/Startup/StartupScene.unity",
     "Assets/Scenes/StaticScene/StaticScene.unity",
     "Assets/Scenes/VisualFlow/VisualFlow.unity",
